@@ -17,9 +17,9 @@ import java.util.concurrent.FutureTask;
 @CrossOrigin(value = "http://localhost:8080", maxAge = 3600)
 public class Getrequest_runalgo {
 
-    @RequestMapping(value = "/runalgo", method = RequestMethod.POST)
+    @RequestMapping("/runalgo")
     @ResponseBody
-    public void tableinfo(@RequestBody String message) {
+    public Map<String, ArrayList< Map<String, String>>> tableinfo() throws ExecutionException, InterruptedException {
         //todo run the algo
         /*
         try {
@@ -35,6 +35,14 @@ public class Getrequest_runalgo {
             System.out.println(e);
         }*/
 
+        System.out.println("getting result");
+
+        FutureTask<Map<String, ArrayList<Map<String, String>>>> futureTask = new FutureTask<>(new thread_create_json());
+        Thread thread = new Thread(futureTask);
+        thread.start();
+
+        // send jsonobeject to fronted
+        return futureTask.get();
     }
 
 
