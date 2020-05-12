@@ -11,12 +11,13 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
-@Controller
+@RestController
 @RequestMapping("/selectmode")
 @CrossOrigin(value = "http://localhost:8080", maxAge = 3600)
 public class Getrequest_runalgo {
-    @ResponseBody
+
     @RequestMapping(value = "/runalgo", method = RequestMethod.POST)
+    @ResponseBody
     public JSONObject tableinfo(@RequestBody String message) throws ExecutionException, InterruptedException {
         //todo run the algo
         /*
