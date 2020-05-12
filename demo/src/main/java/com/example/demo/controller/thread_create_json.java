@@ -58,13 +58,17 @@ public class thread_create_json implements Callable<JSONObject> {
                 for (int i = 0; i < resultArr.length(); i++) {
                     JSONObject resultJsonObj = resultArr.getJSONObject(i);
                     JSONObject resultDetail = new JSONObject();
-                    resultDetail.put("filename", resultJsonObj.getString("filename"));
-                    resultDetail.put("correct", resultJsonObj.getInt("correct"));
-                    resultDetail.put("predict", resultJsonObj.getInt("predict"));
+                    resultDetail.put("matrixName", resultJsonObj.getString("matrixName"));
+                    resultDetail.put("question", resultJsonObj.getString("question"));
+                    resultDetail.put("File", resultJsonObj.getString("File"));
+                    resultDetail.put("Truth", resultJsonObj.getInt("Truth"));
+                    resultDetail.put("Prediction", resultJsonObj.getInt("Prediction"));
                     resultDetail.put("result", resultJsonObj.getString("result"));
 
                     resultTable.put(resultDetail);
                 }
+/*
+
 
                 // create probability json
                 String probabilityStr = getJson("src/main/resources/algoresult/probability.json");
@@ -90,7 +94,7 @@ public class thread_create_json implements Callable<JSONObject> {
                     similarityDetail.put("predict", similarityJsonObj.getInt("predict"));
                     similarityDetail.put("similarity", similarityJsonObj.getFloat("similarity"));
                     similarityTable.put(similarityDetail);
-                }
+                }*/
 
 
                 JSONObject outData = new JSONObject();
@@ -99,8 +103,8 @@ public class thread_create_json implements Callable<JSONObject> {
                 outData.put("AUG_graph", AUG_graph);
                 outData.put("f1_scoreTable", f1_scoreTable);
                 outData.put("resultTable", resultTable);
-                outData.put("probabilityTable", probabilityTable);
-                outData.put("similarityTable", similarityTable);
+                //outData.put("probabilityTable", probabilityTable);
+                //outData.put("similarityTable", similarityTable);
 
                 flag = false;
                 return outData;
