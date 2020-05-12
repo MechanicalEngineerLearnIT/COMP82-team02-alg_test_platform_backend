@@ -4,27 +4,33 @@ package com.example.demo.controller;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 
 import static java.lang.Thread.sleep;
 
-public class thread_create_json implements Callable<JSONObject> {
+public class thread_create_json implements Callable<Map<String, ArrayList< Map<String, String>>>> {
     public volatile boolean flag = true;
 
     @Override
-    public JSONObject call() throws Exception {
+    public Map<String, ArrayList< Map<String, String>>> call() throws Exception {
         while (flag) {
             sleep(100);
             System.out.println("1秒运行一次");
             // 如果存在，就创建json文件
             if (resultAreThere("src/main/resources/algoresult")) {
+                Map<String, ArrayList< Map<String, String>>> output = new HashMap<>();
 
-                JSONArray AUG_graph = new JSONArray();
+                ArrayList< Map<String, String>> AUG_graph = new ArrayList<>();
                 JSONArray probabilityTable = new JSONArray();
-                JSONArray resultTable = new JSONArray();
-                JSONArray f1_scoreTable = new JSONArray();
+                ArrayList< Map<String, String>> resultTable = new ArrayList<>();
+                ArrayList< Map<String, String>> f1_scoreTable = new ArrayList<>();
                 JSONArray similarityTable = new JSONArray();
 
                 /*
@@ -34,10 +40,13 @@ public class thread_create_json implements Callable<JSONObject> {
                 JSONArray graphArr = new JSONArray(graphStr);
                 for (int i = 0; i < graphArr.length(); i++) {
                     JSONObject graphJsonObj = graphArr.getJSONObject(i);
-                    JSONObject graphDetail = new JSONObject();
-                    graphDetail.put("URL", graphJsonObj.getString("URL"));
-                    AUG_graph.put(graphDetail);
+                    //grashjson graphDetail = new grashjson();
+                    Map<String,String> graphDetail = new HashMap<>();
+
+                    graphDetail.put("URL" , graphJsonObj.getString("URL"));
+                    AUG_graph.add(graphDetail);
                 }
+                output.put("AUG_graph", AUG_graph);
 
 
                 // create f1 json
@@ -45,11 +54,13 @@ public class thread_create_json implements Callable<JSONObject> {
                 JSONArray f1Arr = new JSONArray(f1Str);
                 for (int i = 0; i < f1Arr.length(); i++) {
                     JSONObject f1JsonObj = f1Arr.getJSONObject(i);
-                    JSONObject f1Detail = new JSONObject();
-                    f1Detail.put("matrixName", f1JsonObj.getString("matrixName"));
-                    f1Detail.put("f1", f1JsonObj.getFloat("f1"));
-                    f1_scoreTable.put(f1Detail);
+                    //f1json f1Detail = new f1json();
+                    Map<String,String> f1Detail = new HashMap<>();
+                    f1Detail.put("matrixName" ,f1JsonObj.getString("matrixName"));
+                    f1Detail.put("f1", String.valueOf(f1JsonObj.getFloat("f1")));
+                    f1_scoreTable.add(f1Detail);
                 }
+                output.put("f1_scoreTable", f1_scoreTable);
 
 
                 // create result json
@@ -57,16 +68,18 @@ public class thread_create_json implements Callable<JSONObject> {
                 JSONArray resultArr = new JSONArray(resultStr);
                 for (int i = 0; i < resultArr.length(); i++) {
                     JSONObject resultJsonObj = resultArr.getJSONObject(i);
-                    JSONObject resultDetail = new JSONObject();
+                    //resultjson resultDetail = new resultjson();
+                    Map<String,String> resultDetail = new HashMap<>();
                     resultDetail.put("matrixName", resultJsonObj.getString("matrixName"));
                     resultDetail.put("question", resultJsonObj.getString("question"));
                     resultDetail.put("File", resultJsonObj.getString("File"));
-                    resultDetail.put("Truth", resultJsonObj.getInt("Truth"));
-                    resultDetail.put("Prediction", resultJsonObj.getInt("Prediction"));
+                    resultDetail.put("Truth", String.valueOf(resultJsonObj.getInt("Truth")));
+                    resultDetail.put("Prediction", String.valueOf(resultJsonObj.getInt("Prediction")));
                     resultDetail.put("result", resultJsonObj.getString("result"));
 
-                    resultTable.put(resultDetail);
+                    resultTable.add(resultDetail);
                 }
+                output.put("resultTable", resultTable);
 /*
 
 
@@ -97,23 +110,13 @@ public class thread_create_json implements Callable<JSONObject> {
                 }*/
 
 
-                JSONObject outData = new JSONObject();
-                //把json数组加到json对象中
-                //此时创建出来的如下:outData={"AUG_graph":[],"f1_scoreTable":[],"resultTable":[],"probabilityTable":[],"similarityTable":[]};
-                outData.put("AUG_graph", AUG_graph);
-                outData.put("f1_scoreTable", f1_scoreTable);
-                outData.put("resultTable", resultTable);
-                //outData.put("probabilityTable", probabilityTable);
-                //outData.put("similarityTable", similarityTable);
-
                 flag = false;
-                return outData;
+                return output;
 
             }
         }
-        JSONObject outData = new JSONObject();
-        outData.put("fail_information","failed Calculation");
-        return outData;
+
+        return new HashMap<>();
     }
 
 

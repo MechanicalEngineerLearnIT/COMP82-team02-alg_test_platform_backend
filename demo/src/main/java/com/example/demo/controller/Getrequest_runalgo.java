@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -18,7 +19,7 @@ public class Getrequest_runalgo {
 
     @RequestMapping(value = "/runalgo", method = RequestMethod.POST)
     @ResponseBody
-    public JSONObject tableinfo(@RequestBody String message) throws ExecutionException, InterruptedException {
+    public void tableinfo(@RequestBody String message) {
         //todo run the algo
         /*
         try {
@@ -33,17 +34,13 @@ public class Getrequest_runalgo {
         } catch (Exception e) {
             System.out.println(e);
         }*/
-        FutureTask<JSONObject> futureTask = new FutureTask<>(new thread_create_json());
-        Thread thread = new Thread(futureTask);
-        thread.start();
-
-        // send jsonobeject to fronted
-        return futureTask.get();
-
 
     }
 
+
 }
+
+
 
 
 
