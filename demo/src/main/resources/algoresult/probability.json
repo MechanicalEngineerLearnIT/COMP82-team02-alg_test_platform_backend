@@ -1,1 +1,0 @@
-[{"filename": "file_1", "correct": 1, "predict": 1, "probability": 0.66}, {"filename": "file_2", "correct": 1, "predict": 0, "probability": 0.12}, {"filename": "file_3", "correct": 0, "predict": 1, "probability": 0.63}]
