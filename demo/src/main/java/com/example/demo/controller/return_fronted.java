@@ -18,7 +18,7 @@ import java.util.concurrent.FutureTask;
 public class return_fronted {
     @RequestMapping("/result")
     @ResponseBody
-    public Map<String, ArrayList< Map<String, String>>> ifcomplete() throws ExecutionException, InterruptedException {
+    public Map<String, ArrayList< Map<String, String>>> sendToFronted() throws ExecutionException, InterruptedException {
         System.out.println("getting result");
 
         FutureTask<Map<String, ArrayList< Map<String, String>>>> futureTask = new FutureTask<>(new thread_create_json());
