@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:href="@{/css/element-index.css}" rel="stylesheet"/>
+</head>
+<body>
+<div id="test1">
+    <!-- 文件上传 -->
+    <el-upload
+            class="DemoApplication"
+            action="/upload"
+            multiple
+            :limit="3"
+    >
+        <el-button size="small" type="primary">点击上传</el-button>
+    </el-upload>
+
+</div>
+</body>
+
+<script th:src="@{/js/vue.js}"></script>
+<script th:src="@{/js/element-index.js}"></script>
+<script>
+    new Vue({
+        el: '#test1',
+        data:function () {
+            return {
+            }
+        }
+    });
+</script>
+</html>
