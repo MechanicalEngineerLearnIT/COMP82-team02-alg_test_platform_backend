@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class userinfoRepository {
@@ -16,25 +17,40 @@ public class userinfoRepository {
     JdbcTemplate template;
 
     /*Getting all users from table*/
-    public List<userinfo> getAllItems(){
-        List<userinfo> items = template.query("select userEmail,userPassword from userinfo",(result,rowNum)->new userinfo(
-                result.getString("userEmail"),result.getString("userPassword")));
+    public List<userinfo> getAllItems() {
+        List<userinfo> items = template.query("select userEmail,userPassword from userinfo", (result, rowNum) -> new userinfo(
+                result.getString("userEmail"), result.getString("userPassword")));
         return items;
     }
+
     /*Getting a specific user by userEmail from table*/
-    public userinfo getItem(String userEmail){
+    public String getItem(String userEmail) {
         String query = "SELECT * FROM userinfo WHERE userEmail =?";
-        userinfo item = template.queryForObject(query,new Object[]{userEmail},new BeanPropertyRowMapper<>(userinfo.class));
-        return item;
+
+        List<userinfo> list = template.query(query, new Object[]{userEmail}, new BeanPropertyRowMapper<>(userinfo.class));
+        if (list.size() == 1) {
+
+            return list.get(0).getUserPassword();
+        } else {
+
+            return "email dos not exist";
+        }
+
+
     }
+
     /*Adding a user into database table*/
-    public int addItem(String userEmail,String userPassword){
+    public int addItem(String userEmail, String userPassword) {
         String query = "INSERT INTO userinfo VALUES(?,?)";
-        return template.update(query,userEmail,userPassword);
+        return template.update(query, userEmail, userPassword);
     }
-    /*delete a user from database*/
-    public int deleteItem(String userEmail){
+
+    /*
+        delete a user from database
+    public int deleteItem(String userEmail) {
         String query = "DELETE FROM userinfo WHERE userEmail =?";
-        return template.update(query,userEmail);
+        return template.update(query, userEmail);
     }
+     */
+
 }

@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/*
+controller  for  user logIN and register
+
+ */
 @RestController
 public class userinfoController {
 
@@ -18,35 +22,59 @@ public class userinfoController {
     @Autowired
     userinfoRepository userRepo;
 
-    @RequestMapping("/getAllItems")
+    @RequestMapping("/getAllUsersInfo")
     @ResponseBody
-    public List<userinfo> getAllItems(){
+    public List<userinfo> getAllItems() {
         return userRepo.getAllItems();
     }
 
-    @RequestMapping("/getItem")
+    /*
+    input userEmail,userPassword
+    output log in Successfully/ email dos not exist
+     */
+    @RequestMapping("/login")
     @ResponseBody
-    public userinfo getItem(@RequestParam("userEmail") String userEmail){
-        return userRepo.getItem(userEmail);
+    public String getItem(@RequestParam("userEmail") String userEmail, @RequestParam("userPassword") String userPassword) {
+        String userPasswordFromMySQL = userRepo.getItem(userEmail);
+        if (userPasswordFromMySQL.equals("email dos not exist")) {
+            return "email does not exist";
+        } else {
+            if (userPasswordFromMySQL.equals(userPassword)) {
+                return "true";
+            } else {
+                return "password incorrect";
+            }
+
+        }
     }
 
-    @RequestMapping("/addItem")
+
+    @RequestMapping("/register")
     @ResponseBody
-    public String addItem(@RequestParam("userEmail") String userEmail,@RequestParam("userPassword") String userPassword
-                          ){
-        if(userRepo.addItem(userEmail,userPassword) >= 1){
-            return "User Added Successfully";
-        }else{
-            return "Something went wrong !";
+    public String addItem(@RequestParam("userEmail") String userEmail, @RequestParam("userPassword") String userPassword
+    ) {
+        String whetherEmailExist = userRepo.getItem(userEmail);
+        if (whetherEmailExist.equals("email dos not exist")) {
+            if (userRepo.addItem(userEmail, userPassword) >= 1) {
+                return "true";
+            } else {
+                return "System wrong!";
+            }
         }
+        return "Email already exists";
     }
-    @RequestMapping("/deteteItem")
+
+
+/*
+@RequestMapping("/deteteUser")
     @ResponseBody
-    public String deteteItem(@RequestParam("userEmail") String userEmail){
-        if(userRepo.deleteItem(userEmail) >= 1){
+    public String deteteItem(@RequestParam("userEmail") String userEmail) {
+        if (userRepo.deleteItem(userEmail) >= 1) {
             return "User Deleted Successfully";
-        }else{
+        } else {
             return "Something went wrong !";
         }
     }
+ */
+
 }

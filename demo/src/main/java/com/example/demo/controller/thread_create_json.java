@@ -14,27 +14,24 @@ import java.util.concurrent.Callable;
 
 import static java.lang.Thread.sleep;
 
-public class thread_create_json implements Callable<Map<String, ArrayList< Map<String, String>>>> {
+public class thread_create_json implements Callable<Map<String, ArrayList<Map<String, String>>>> {
     public volatile boolean flag = true;
 
     @Override
-    public Map<String, ArrayList< Map<String, String>>> call() throws Exception {
+    public Map<String, ArrayList<Map<String, String>>> call() throws Exception {
         while (flag) {
             sleep(100);
             System.out.println("1秒运行一次");
             // 如果存在，就创建json文件
             if (resultAreThere("src/main/resources/algoresult")) {
-                Map<String, ArrayList< Map<String, String>>> output = new HashMap<>();
+                Map<String, ArrayList<Map<String, String>>> output = new HashMap<>();
 
-                ArrayList< Map<String, String>> AUG_graph = new ArrayList<>();
-                JSONArray probabilityTable = new JSONArray();
-                ArrayList< Map<String, String>> resultTable = new ArrayList<>();
-                ArrayList< Map<String, String>> f1_scoreTable = new ArrayList<>();
-                JSONArray similarityTable = new JSONArray();
+                ArrayList<Map<String, String>> probabilityTable = new ArrayList<>();
+
 
                 /*
                 create AUG_graph json
-                 */
+
                 String graphStr = getJson("src/main/resources/algoresult/graph.json");
                 JSONArray graphArr = new JSONArray(graphStr);
                 for (int i = 0; i < graphArr.length(); i++) {
@@ -45,40 +42,38 @@ public class thread_create_json implements Callable<Map<String, ArrayList< Map<S
                     graphDetail.put("URL" , graphJsonObj.getString("URL"));
                     AUG_graph.add(graphDetail);
                 }
-                output.put("AUG_graph", AUG_graph);
+                output.put("AUG_graph", AUG_graph);*/
 
 
-                // create f1 json
-                String f1Str = getJson("src/main/resources/algoresult/f1table.json");
-                JSONArray f1Arr = new JSONArray(f1Str);
-                for (int i = 0; i < f1Arr.length(); i++) {
-                    JSONObject f1JsonObj = f1Arr.getJSONObject(i);
-                    //f1json f1Detail = new f1json();
-                    Map<String,String> f1Detail = new HashMap<>();
-                    f1Detail.put("matrixName" ,f1JsonObj.getString("matrixName"));
-                    f1Detail.put("f1", String.valueOf(f1JsonObj.getFloat("f1")));
-                    f1_scoreTable.add(f1Detail);
+                // create probability json
+                String probabilityStr = getJson("src/main/resources/algoresult/probability.json");
+                JSONArray probabilityArr = new JSONArray(probabilityStr);
+                for (int i = 0; i < probabilityArr.length(); i++) {
+                    JSONObject probabilityJsonObj = probabilityArr.getJSONObject(i);
+
+                    Map<String, String> probabilityDetail = new HashMap<>();
+                    //probabilityDetail.put("matrixName", probabilityJsonObj.getString("matrixName"));
+                    probabilityDetail.put("probability", String.valueOf(probabilityJsonObj.getFloat("probability")));
+                    probabilityTable.add(probabilityDetail);
                 }
-                output.put("f1_scoreTable", f1_scoreTable);
+                output.put("probabilityTable", probabilityTable);
 
+                ArrayList<Map<String, String>> fileNameTable = new ArrayList<>();
 
-                // create result json
-                String resultStr = getJson("src/main/resources/algoresult/resultTF.json");
-                JSONArray resultArr = new JSONArray(resultStr);
-                for (int i = 0; i < resultArr.length(); i++) {
-                    JSONObject resultJsonObj = resultArr.getJSONObject(i);
-                    //resultjson resultDetail = new resultjson();
-                    Map<String,String> resultDetail = new HashMap<>();
-                    resultDetail.put("matrixName", resultJsonObj.getString("matrixName"));
-                    resultDetail.put("question", resultJsonObj.getString("question"));
-                    resultDetail.put("File", resultJsonObj.getString("File"));
-                    resultDetail.put("Truth", String.valueOf(resultJsonObj.getInt("Truth")));
-                    resultDetail.put("Prediction", String.valueOf(resultJsonObj.getInt("Prediction")));
-                    resultDetail.put("result", resultJsonObj.getString("result"));
+                Map<String, String> fileNameMap = new HashMap<>();
+                File file = new File("./unknown/");
 
-                    resultTable.add(resultDetail);
+                String[] filelist = file.list();
+                if (filelist != null) {
+                    fileNameMap.put("fileName", filelist[0]);
+                    fileNameTable.add(fileNameMap);
+                    output.put("fileNameTable", fileNameTable);
                 }
-                output.put("resultTable", resultTable);
+
+
+
+
+
 /*
 
 

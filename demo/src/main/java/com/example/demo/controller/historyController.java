@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class historyController {
@@ -20,30 +23,36 @@ public class historyController {
 
     @RequestMapping("/getAllRecords")
     @ResponseBody
-    public List<history> getAllRecords(){ return historyRepo.getAllRecords(); }
+    public List<history> getAllRecords() {
+        return historyRepo.getAllRecords();
+    }
 
     @RequestMapping("/getRecords")
     @ResponseBody
-    public history getRecords(@RequestParam("userEmail") String userEmail){ return historyRepo.getRecords(userEmail); }
-
-
-    @RequestMapping("/addRecord")
-    @ResponseBody
-    public String addRecord(@RequestParam("userEmail") String userEmail,@RequestParam("submissionTime") Timestamp submissionTime,
-                            @RequestParam("possibility") String possibility,@RequestParam("fileName") String fileName
-    ){
-        if(historyRepo.addRecord(userEmail,submissionTime,possibility,fileName) >= 1){
-            return "Record Added Successfully";
-        }else{
-            return "Something went wrong !";
+    public ArrayList<Map<String, String>> getRecords(@RequestParam("userEmail") String userEmail) {
+        ArrayList<Map<String, String>> history = historyRepo.getRecords(userEmail);
+        if (history.size() >= 1) {
+            return history;
+        } else {
+            ArrayList<Map<String, String>> emptyHistory = new ArrayList<>();
+            Map<String, String> emptyError = new HashMap<>();
+            emptyError.put("error Information", "empty history");
+            emptyHistory.add(emptyError);
+            return emptyHistory;
         }
+
     }
+
+    /*
+    used to delete user's history
+    if user want to delete
+     */
     @RequestMapping("/deteRecord")
     @ResponseBody
-    public String deteteRecord(@RequestParam("userEmail") String userEmail,@RequestParam("submissionTime") Timestamp submissionTime){
-        if(historyRepo.deleteRecord(userEmail,submissionTime) >= 1){
+    public String deteteRecord(@RequestParam("userEmail") String userEmail, @RequestParam("submissionTime") Timestamp submissionTime) {
+        if (historyRepo.deleteRecord(userEmail, submissionTime) >= 1) {
             return "User Deleted Successfully";
-        }else{
+        } else {
             return "Something went wrong !";
         }
     }

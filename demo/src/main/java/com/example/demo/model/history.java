@@ -32,8 +32,8 @@ public class history {
 
     public void setUserEmail(String userEmail) { this.userEmail = userEmail; }
 
-    public java.sql.Timestamp getSubmissionTime() {
-        return submissionTime;
+    public String getSubmissionTime() {
+        return submissionTime.toString();
     }
 
     public void setSubmissionTime(java.sql.Timestamp submissionTime) {
