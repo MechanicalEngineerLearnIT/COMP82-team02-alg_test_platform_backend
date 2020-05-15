@@ -88,9 +88,9 @@ public class Getrequest_runalgo {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        java.sql.Timestamp sql_date = new java.sql.Timestamp(date.getTime());//进行日期的转换
+        assert date != null;
 
-        return sql_date;
+        return new Timestamp(date.getTime());
 
     }
 }
