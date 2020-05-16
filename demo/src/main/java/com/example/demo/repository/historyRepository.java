@@ -37,11 +37,10 @@ public class historyRepository {
 
         for (int i = 0; i < item.size(); i++) {
             Map<String, String> eachHistory = new HashMap<>();
+            eachHistory.put("fileName", item.get(i).getFileName());
             eachHistory.put("submissionTime", item.get(i).getSubmissionTime());
             eachHistory.put("result", item.get(i).getResult());
             eachHistory.put("threshold", item.get(i).getThreshold());
-            eachHistory.put("fileName", item.get(i).getFileName());
-
             userHistory.add(eachHistory);
         }
 
@@ -50,12 +49,12 @@ public class historyRepository {
     }
 
     /*Adding a record into database table*/
-    public int addRecord(String userEmail, Timestamp submissionTime, String result,String threshold, String fileName) {
+    public int addRecord(String userEmail, String fileName, Timestamp submissionTime, String result,String threshold) {
         String query = "INSERT INTO history VALUES(?,?,?,?,?)";
-        return template.update(query, userEmail, submissionTime, result,threshold, fileName);
+        return template.update(query, userEmail, fileName,submissionTime, result,threshold);
     }
 
-    /*delete a record from database*/
+    /*delete a record from database if user want to delete history*/
     public int deleteRecord(String userEmail, Timestamp submissionTime) {
         String query = "DELETE FROM history WHERE userEmail =? AND submissionTime =?";
         return template.update(query, userEmail, submissionTime);

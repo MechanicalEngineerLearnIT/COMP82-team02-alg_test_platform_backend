@@ -31,6 +31,20 @@ public class thread_create_json implements Callable<Map<String, ArrayList<Map<St
                 ArrayList<Map<String, String>> thresholdTable = new ArrayList<>();
                 ArrayList<Map<String, String>> graphTable = new ArrayList<>();
 
+
+
+                // create fileName json
+                ArrayList<Map<String, String>> fileNameTable = new ArrayList<>();
+
+                Map<String, String> fileNameMap = new HashMap<>();
+                File file = new File("./unknown/");
+
+                String[] filelist = file.list();
+                if (filelist != null) {
+                    fileNameMap.put("fileName", filelist[0]);
+                    fileNameTable.add(fileNameMap);
+                    output.put("fileNameTable", fileNameTable);
+                }
                 // create threshold json
                 String thresholdStr = getJson("src/main/resources/algoresult/threshold.json");
                 JSONObject thresholdJsonObject = new JSONObject(thresholdStr);
@@ -44,7 +58,6 @@ public class thread_create_json implements Callable<Map<String, ArrayList<Map<St
                     thresholdTable.add(thresholdDetail);
                 }
                 output.put("thresholdTable", thresholdTable);
-
 
 
                 // create probability json and graph json
@@ -67,23 +80,6 @@ public class thread_create_json implements Callable<Map<String, ArrayList<Map<St
                 }
                 output.put("probabilityTable", probabilityTable);
                 output.put("graphTable", graphTable);
-
-
-                // create fileName json
-                ArrayList<Map<String, String>> fileNameTable = new ArrayList<>();
-
-                Map<String, String> fileNameMap = new HashMap<>();
-                File file = new File("./unknown/");
-
-                String[] filelist = file.list();
-                if (filelist != null) {
-                    fileNameMap.put("fileName", filelist[0]);
-                    fileNameTable.add(fileNameMap);
-                    output.put("fileNameTable", fileNameTable);
-                }
-
-
-
 
 
                 flag = false;

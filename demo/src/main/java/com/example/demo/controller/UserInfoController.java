@@ -16,7 +16,7 @@ controller  for  user logIN and register
 
  */
 @RestController
-public class userinfoController {
+public class UserInfoController {
 
 
     @Autowired

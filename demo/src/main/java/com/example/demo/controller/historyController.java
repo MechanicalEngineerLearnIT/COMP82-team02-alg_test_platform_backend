@@ -31,12 +31,19 @@ public class historyController {
     @ResponseBody
     public ArrayList<Map<String, String>> getRecords(@RequestParam("userEmail") String userEmail) {
         ArrayList<Map<String, String>> history = historyRepo.getRecords(userEmail);
+
         if (history.size() >= 1) {
             return history;
+
         } else {
             ArrayList<Map<String, String>> emptyHistory = new ArrayList<>();
             Map<String, String> emptyError = new HashMap<>();
-            emptyError.put("error Information", "empty history");
+
+            emptyError.put("fileName", "null");
+            emptyError.put("submissionTIme", "null");
+            emptyError.put("result", "null");
+            emptyError.put("threshold", "null");
+
             emptyHistory.add(emptyError);
             return emptyHistory;
         }

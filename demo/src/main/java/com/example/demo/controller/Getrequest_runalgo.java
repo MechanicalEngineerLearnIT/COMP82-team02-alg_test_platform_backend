@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-//@RequestMapping("/selectmode")
 @CrossOrigin(value = "http://localhost:8080", maxAge = 3600)
 public class Getrequest_runalgo {
     @Autowired
@@ -78,13 +77,13 @@ public class Getrequest_runalgo {
 
 
         //adding history into database
-        if (historyRepo.addRecord(userEmail, submissionTime, possibility, fileName) >= 1) {
+        if (historyRepo.addRecord(userEmail, fileName,submissionTime,result,threshold ) >= 1) {
             System.out.println("Record Added Successfully");
         } else {
             System.out.println("System wrong!");
         }
         // send jsonobeject to fronted
-        return result;
+        return resultAlgo;
     }
 
     // String --> Date时间
