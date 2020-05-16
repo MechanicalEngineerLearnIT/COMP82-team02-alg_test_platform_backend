@@ -9,17 +9,20 @@ import java.sql.Timestamp;
 public class history {
     private String userEmail;
     private java.sql.Timestamp submissionTime;
-    private String possibility;
+    private String result;
+    private String threshold;
     private String fileName;
+
 
 
     public history() {
     }
 
-    public history(String userEmail, java.sql.Timestamp submissionTime, String possibility, String fileName) {
+    public history(String userEmail, java.sql.Timestamp submissionTime, String result, String threshold,String fileName) {
         this.userEmail = userEmail;
         this.submissionTime =  submissionTime;
-        this.possibility = possibility;
+        this.result = result;
+        this.threshold = threshold;
         this.fileName = fileName;
 
     }
@@ -40,13 +43,15 @@ public class history {
         this.submissionTime = (Timestamp) submissionTime;
     }
 
-    public String getPossibility() {
-        return possibility;
+    public String getResult() { return result; }
+
+    public void setResult(String result) {
+        this.result = result;
     }
 
-    public void setPossibility(String possibility) {
-        this.possibility = possibility;
-    }
+    public String getThreshold() { return threshold; }
+
+    public void setThreshold(String threshold) { this.threshold = threshold; }
 
     public String getFileName() { return fileName; }
 

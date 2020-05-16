@@ -22,9 +22,9 @@ public class historyRepository {
 
     /*Getting all Items from table*/
     public List<history> getAllRecords() {
-        List<history> items = template.query("select userEmail,submissionTime,possibility,fileName from history", (result, rowNum) -> new history(
+        List<history> items = template.query("select userEmail,submissionTime,result,threshold,fileName from history", (result, rowNum) -> new history(
                 result.getString("userEmail"), result.getTimestamp("submissionTime"),
-                result.getString("possibility"), result.getString("fileName")));
+                result.getString("result"), result.getString("threshold"),result.getString("fileName")));
         return items;
     }
 
@@ -38,8 +38,10 @@ public class historyRepository {
         for (int i = 0; i < item.size(); i++) {
             Map<String, String> eachHistory = new HashMap<>();
             eachHistory.put("submissionTime", item.get(i).getSubmissionTime());
+            eachHistory.put("result", item.get(i).getResult());
+            eachHistory.put("threshold", item.get(i).getThreshold());
             eachHistory.put("fileName", item.get(i).getFileName());
-            eachHistory.put("possibility", item.get(i).getPossibility());
+
             userHistory.add(eachHistory);
         }
 
@@ -48,9 +50,9 @@ public class historyRepository {
     }
 
     /*Adding a record into database table*/
-    public int addRecord(String userEmail, Timestamp submissionTime, String possibility, String fileName) {
-        String query = "INSERT INTO history VALUES(?,?,?,?)";
-        return template.update(query, userEmail, submissionTime, possibility, fileName);
+    public int addRecord(String userEmail, Timestamp submissionTime, String result,String threshold, String fileName) {
+        String query = "INSERT INTO history VALUES(?,?,?,?,?)";
+        return template.update(query, userEmail, submissionTime, result,threshold, fileName);
     }
 
     /*delete a record from database*/

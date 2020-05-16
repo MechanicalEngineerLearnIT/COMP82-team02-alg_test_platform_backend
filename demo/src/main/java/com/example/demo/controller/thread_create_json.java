@@ -9,6 +9,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
@@ -29,35 +30,22 @@ public class thread_create_json implements Callable<Map<String, ArrayList<Map<St
                 ArrayList<Map<String, String>> probabilityTable = new ArrayList<>();
 
 
-                /*
-                create AUG_graph json
-
-                String graphStr = getJson("src/main/resources/algoresult/graph.json");
-                JSONArray graphArr = new JSONArray(graphStr);
-                for (int i = 0; i < graphArr.length(); i++) {
-                    JSONObject graphJsonObj = graphArr.getJSONObject(i);
-                    //grashjson graphDetail = new grashjson();
-                    Map<String,String> graphDetail = new HashMap<>();
-
-                    graphDetail.put("URL" , graphJsonObj.getString("URL"));
-                    AUG_graph.add(graphDetail);
-                }
-                output.put("AUG_graph", AUG_graph);*/
-
-
                 // create probability json
                 String probabilityStr = getJson("src/main/resources/algoresult/probability.json");
-                JSONArray probabilityArr = new JSONArray(probabilityStr);
-                for (int i = 0; i < probabilityArr.length(); i++) {
-                    JSONObject probabilityJsonObj = probabilityArr.getJSONObject(i);
-
+                JSONObject jsonObject = new JSONObject(probabilityStr);
+                Iterator keys = jsonObject.keys();
+                //然后通过循环遍历出的key值
+                while (keys.hasNext()) {
+                    String key = String.valueOf(keys.next());
                     Map<String, String> probabilityDetail = new HashMap<>();
-                    //probabilityDetail.put("matrixName", probabilityJsonObj.getString("matrixName"));
-                    probabilityDetail.put("probability", String.valueOf(probabilityJsonObj.getFloat("probability")));
+                    probabilityDetail.put("metricsName", key);
+                    probabilityDetail.put("similarity", String.valueOf(jsonObject.getFloat(key)));
                     probabilityTable.add(probabilityDetail);
                 }
                 output.put("probabilityTable", probabilityTable);
 
+
+                // create fileName json
                 ArrayList<Map<String, String>> fileNameTable = new ArrayList<>();
 
                 Map<String, String> fileNameMap = new HashMap<>();
@@ -69,39 +57,6 @@ public class thread_create_json implements Callable<Map<String, ArrayList<Map<St
                     fileNameTable.add(fileNameMap);
                     output.put("fileNameTable", fileNameTable);
                 }
-
-
-
-
-
-/*
-
-
-                // create probability json
-                String probabilityStr = getJson("src/main/resources/algoresult/probability.json");
-                JSONArray probabilityArr = new JSONArray(probabilityStr);
-                for (int i = 0; i < probabilityArr.length(); i++) {
-                    JSONObject probabilityJsonObj = probabilityArr.getJSONObject(i);
-                    JSONObject probabilityDetail = new JSONObject();
-                    probabilityDetail.put("filename", probabilityJsonObj.getString("filename"));
-                    probabilityDetail.put("correct", probabilityJsonObj.getInt("correct"));
-                    probabilityDetail.put("predict", probabilityJsonObj.getInt("predict"));
-                    probabilityDetail.put("probability", probabilityJsonObj.getFloat("probability"));
-                    probabilityTable.put(probabilityDetail);
-                }
-
-                // create similarity json
-                String similarityStr = getJson("src/main/resources/algoresult/similarity.json");
-                JSONArray similarityArr = new JSONArray(probabilityStr);
-                for (int i = 0; i < similarityArr.length(); i++) {
-                    JSONObject similarityJsonObj = similarityArr.getJSONObject(i);
-                    JSONObject similarityDetail = new JSONObject();
-                    similarityDetail.put("filename", similarityJsonObj.getString("filename"));
-                    similarityDetail.put("correct", similarityJsonObj.getInt("correct"));
-                    similarityDetail.put("predict", similarityJsonObj.getInt("predict"));
-                    similarityDetail.put("similarity", similarityJsonObj.getFloat("similarity"));
-                    similarityTable.put(similarityDetail);
-                }*/
 
 
                 flag = false;
