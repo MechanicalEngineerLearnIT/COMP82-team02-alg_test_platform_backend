@@ -7,10 +7,10 @@ import org.json.JSONObject;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.concurrent.Callable;
 
 import static java.lang.Thread.sleep;
@@ -28,21 +28,45 @@ public class thread_create_json implements Callable<Map<String, ArrayList<Map<St
                 Map<String, ArrayList<Map<String, String>>> output = new HashMap<>();
 
                 ArrayList<Map<String, String>> probabilityTable = new ArrayList<>();
+                ArrayList<Map<String, String>> thresholdTable = new ArrayList<>();
+                ArrayList<Map<String, String>> graphTable = new ArrayList<>();
+
+                // create threshold json
+                String thresholdStr = getJson("src/main/resources/algoresult/threshold.json");
+                JSONObject thresholdJsonObject = new JSONObject(thresholdStr);
+                Iterator thresholdKeys = thresholdJsonObject.keys();
+                //然后通过循环遍历出的key值
+                while (thresholdKeys.hasNext()) {
+                    String thresholdKey = String.valueOf(thresholdKeys.next());
+                    Map<String, String> thresholdDetail = new HashMap<>();
+                    thresholdDetail.put("metricsName", thresholdKey);
+                    thresholdDetail.put("threshold", String.valueOf(thresholdJsonObject.getFloat(thresholdKey)));
+                    thresholdTable.add(thresholdDetail);
+                }
+                output.put("thresholdTable", thresholdTable);
 
 
-                // create probability json
+
+                // create probability json and graph json
                 String probabilityStr = getJson("src/main/resources/algoresult/probability.json");
-                JSONObject jsonObject = new JSONObject(probabilityStr);
-                Iterator keys = jsonObject.keys();
+                JSONObject probabilityJsonObject = new JSONObject(probabilityStr);
+                Iterator keys = probabilityJsonObject.keys();
                 //然后通过循环遍历出的key值
                 while (keys.hasNext()) {
                     String key = String.valueOf(keys.next());
                     Map<String, String> probabilityDetail = new HashMap<>();
+                    Map<String, String> graphDetail = new HashMap<>();
                     probabilityDetail.put("metricsName", key);
-                    probabilityDetail.put("similarity", String.valueOf(jsonObject.getFloat(key)));
+                    probabilityDetail.put("similarity", String.valueOf(probabilityJsonObject.getFloat(key)));
+
+                    graphDetail.put("x", key);
+                    graphDetail.put("y", String.valueOf(probabilityJsonObject.getFloat(key)));
+
                     probabilityTable.add(probabilityDetail);
+                    graphTable.add(graphDetail);
                 }
                 output.put("probabilityTable", probabilityTable);
+                output.put("graphTable", graphTable);
 
 
                 // create fileName json
@@ -57,6 +81,9 @@ public class thread_create_json implements Callable<Map<String, ArrayList<Map<St
                     fileNameTable.add(fileNameMap);
                     output.put("fileNameTable", fileNameTable);
                 }
+
+
+
 
 
                 flag = false;

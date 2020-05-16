@@ -50,21 +50,32 @@ public class Getrequest_runalgo {
         } catch (Exception e) {
             System.out.println(e);
         }*/
-        Timestamp time1 = new Timestamp(System.currentTimeMillis());
-
-        java.sql.Timestamp submissionTime =  to_sqldate(time1.toString());
 
 
-        System.out.println(submissionTime.toString());
+        // get timeStamp
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        java.sql.Timestamp submissionTime = to_sqldate(time.toString());
 
+        // run algo with thread
         FutureTask<Map<String, ArrayList<Map<String, String>>>> futureTask = new FutureTask<>(new thread_create_json());
         Thread thread = new Thread(futureTask);
-
         thread.start();
 
-        Map<String, ArrayList<Map<String, String>>> result = futureTask.get();
-        String fileName = result.get("fileNameTable").get(0).get("fileName");
-        String possibility = result.get("probabilityTable").get(0).get("probability");
+        // get result of thread
+        Map<String, ArrayList<Map<String, String>>> resultAlgo = futureTask.get();
+
+
+        // get fileName
+        String fileName = resultAlgo.get("fileNameTable").get(0).get("fileName");
+
+        //get result
+        ArrayList<Map<String, String>> resultTable = resultAlgo.get("probabilityTable");
+        String result = resultTable.toString();
+
+        //get threshold
+        ArrayList<Map<String, String>> thresholdTable = resultAlgo.get("thresholdTable");
+        String threshold = resultTable.toString();
+
 
         //adding history into database
         if (historyRepo.addRecord(userEmail, submissionTime, possibility, fileName) >= 1) {
@@ -75,6 +86,7 @@ public class Getrequest_runalgo {
         // send jsonobeject to fronted
         return result;
     }
+
     // String --> Date时间
     public static java.sql.Timestamp to_sqldate(String time_date) {
         SimpleDateFormat sdf = null;
