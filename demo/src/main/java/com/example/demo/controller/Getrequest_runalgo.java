@@ -74,7 +74,7 @@ public class Getrequest_runalgo {
 
         //get threshold
         ArrayList<Map<String, String>> thresholdTable = resultAlgo.get("thresholdTable");
-        String threshold = resultTable.toString();
+        String threshold = thresholdTable.toString();
 
 
         //adding history into database
