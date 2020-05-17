@@ -54,7 +54,7 @@ public class historyController {
     used to delete user's history
     if user want to delete
      */
-    @RequestMapping("/deteRecord")
+    @RequestMapping("/deleteRecord")
     @ResponseBody
     public String deteteRecord(@RequestParam("userEmail") String userEmail, @RequestParam("submissionTime") Timestamp submissionTime) {
         if (historyRepo.deleteRecord(userEmail, submissionTime) >= 1) {

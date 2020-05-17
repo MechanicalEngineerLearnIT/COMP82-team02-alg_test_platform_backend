@@ -22,7 +22,7 @@ public class historyRepository {
 
     /*Getting all Items from table*/
     public List<history> getAllRecords() {
-        List<history> items = template.query("select userEmail,submissionTime,result,threshold,fileName from history", (result, rowNum) -> new history(
+        List<history> items = template.query("select userEmail,fileName,submissionTime,result,threshold from history", (result, rowNum) -> new history(
                 result.getString("userEmail"), result.getTimestamp("submissionTime"),
                 result.getString("result"), result.getString("threshold"),result.getString("fileName")));
         return items;
