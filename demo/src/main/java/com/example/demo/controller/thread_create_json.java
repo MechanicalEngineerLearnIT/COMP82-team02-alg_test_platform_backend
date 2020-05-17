@@ -26,16 +26,11 @@ public class thread_create_json implements Callable<Map<String, ArrayList<Map<St
             // 如果存在，就创建json文件
             if (resultAreThere("src/main/resources/algoresult")) {
                 Map<String, ArrayList<Map<String, String>>> output = new HashMap<>();
-
                 ArrayList<Map<String, String>> probabilityTable = new ArrayList<>();
                 ArrayList<Map<String, String>> thresholdTable = new ArrayList<>();
-                ArrayList<Map<String, String>> graphTable = new ArrayList<>();
-
-
 
                 // create fileName json
                 ArrayList<Map<String, String>> fileNameTable = new ArrayList<>();
-
                 Map<String, String> fileNameMap = new HashMap<>();
                 File file = new File("./unknown/");
 
@@ -68,18 +63,12 @@ public class thread_create_json implements Callable<Map<String, ArrayList<Map<St
                 while (keys.hasNext()) {
                     String key = String.valueOf(keys.next());
                     Map<String, String> probabilityDetail = new HashMap<>();
-                    Map<String, String> graphDetail = new HashMap<>();
                     probabilityDetail.put("metricsName", key);
                     probabilityDetail.put("similarity", String.valueOf(probabilityJsonObject.getFloat(key)));
-
-                    graphDetail.put("x", key);
-                    graphDetail.put("y", String.valueOf(probabilityJsonObject.getFloat(key)));
-
                     probabilityTable.add(probabilityDetail);
-                    graphTable.add(graphDetail);
                 }
                 output.put("probabilityTable", probabilityTable);
-                output.put("graphTable", graphTable);
+
 
 
                 flag = false;

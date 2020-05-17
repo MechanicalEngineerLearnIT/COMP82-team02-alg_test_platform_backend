@@ -60,18 +60,17 @@ public class Getrequest_runalgo {
         Thread thread = new Thread(futureTask);
         thread.start();
 
-        // get result of thread
+        // get result from thread
         Map<String, ArrayList<Map<String, String>>> resultAlgo = futureTask.get();
 
-
-        // get fileName
+        // get fileName for update database
         String fileName = resultAlgo.get("fileNameTable").get(0).get("fileName");
 
-        //get result
+        //get result for update database
         ArrayList<Map<String, String>> resultTable = resultAlgo.get("probabilityTable");
         String result = resultTable.toString();
 
-        //get threshold
+        //get threshold for update database
         ArrayList<Map<String, String>> thresholdTable = resultAlgo.get("thresholdTable");
         String threshold = thresholdTable.toString();
 

@@ -40,7 +40,7 @@ public class historyController {
             Map<String, String> emptyError = new HashMap<>();
 
             emptyError.put("fileName", "null");
-            emptyError.put("submissionTIme", "null");
+            emptyError.put("submissionTime", "null");
             emptyError.put("result", "null");
             emptyError.put("threshold", "null");
 
