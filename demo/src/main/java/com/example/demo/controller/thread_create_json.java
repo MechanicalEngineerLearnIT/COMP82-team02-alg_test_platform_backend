@@ -32,7 +32,7 @@ public class thread_create_json implements Callable<Map<String, ArrayList<Map<St
                 // create fileName json
                 ArrayList<Map<String, String>> fileNameTable = new ArrayList<>();
                 Map<String, String> fileNameMap = new HashMap<>();
-                File file = new File("./unknown/");
+                File file = new File("./data/unknown/");
 
                 String[] filelist = file.list();
                 if (filelist != null) {
@@ -68,8 +68,19 @@ public class thread_create_json implements Callable<Map<String, ArrayList<Map<St
                     probabilityTable.add(probabilityDetail);
                 }
                 output.put("probabilityTable", probabilityTable);
-
-
+                System.out.println("here");
+                try {
+                    System.out.println("deleting files ");
+                    Process p = Runtime.getRuntime().exec("python -m deletefiles");
+                    int re = p.waitFor();
+                    if (re == 0) {
+                        System.out.println("success");
+                    } else {
+                        System.out.println("fail");
+                    }
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
 
                 flag = false;
                 return output;

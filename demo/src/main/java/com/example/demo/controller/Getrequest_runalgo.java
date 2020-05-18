@@ -32,14 +32,15 @@ public class Getrequest_runalgo {
     @Autowired
     historyRepository historyRepo;
 
-    @RequestMapping("/runalgo")
+    @RequestMapping(value="/runalgo", method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, ArrayList<Map<String, String>>> tableinfo(@RequestParam("userEmail") String userEmail) throws ExecutionException, InterruptedException {
+    public Map<String, ArrayList<Map<String, String>>> tableinfo(@RequestParam(value="userEmail") String userEmail) throws ExecutionException, InterruptedException {
+
         //todo run the algo
-        /*
+
         try {
-            System.out.println("running algorithm under mode " + message);
-            Process p = Runtime.getRuntime().exec("python -m fake_algo");
+            System.out.println("running algorithm");
+            Process p = Runtime.getRuntime().exec("python -m algo_script");
             int re = p.waitFor();
             if (re == 0) {
                 System.out.println("success");
@@ -48,7 +49,7 @@ public class Getrequest_runalgo {
             }
         } catch (Exception e) {
             System.out.println(e);
-        }*/
+        }
 
 
         // get timeStamp

@@ -4,10 +4,7 @@ package com.example.demo.controller;
 import com.example.demo.model.userinfo;
 import com.example.demo.repository.userinfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,9 +29,9 @@ public class UserInfoController {
     input userEmail,userPassword
     output log in Successfully/ email dos not exist
      */
-    @RequestMapping("/login")
+    @RequestMapping(value ="/login", method = RequestMethod.POST)
     @ResponseBody
-    public String getItem(@RequestParam("userEmail") String userEmail, @RequestParam("userPassword") String userPassword) {
+    public String getItem(@RequestParam(value="userEmail") String userEmail, @RequestParam(value="userPassword") String userPassword) {
         String userPasswordFromMySQL = userRepo.getItem(userEmail);
         if (userPasswordFromMySQL.equals("email dos not exist")) {
             return "email does not exist";
@@ -42,6 +39,7 @@ public class UserInfoController {
             if (userPasswordFromMySQL.equals(userPassword)) {
                 return "true";
             } else {
+
                 return "password incorrect";
             }
 
@@ -49,9 +47,9 @@ public class UserInfoController {
     }
 
 
-    @RequestMapping("/register")
+    @RequestMapping(value ="/register", method = RequestMethod.POST)
     @ResponseBody
-    public String addItem(@RequestParam("userEmail") String userEmail, @RequestParam("userPassword") String userPassword
+    public String addItem(@RequestParam(value ="userEmail") String userEmail, @RequestParam(value ="userPassword") String userPassword
     ) {
         String whetherEmailExist = userRepo.getItem(userEmail);
         if (whetherEmailExist.equals("email dos not exist")) {
