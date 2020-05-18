@@ -32,7 +32,7 @@ public class Getrequest_runalgo {
     @Autowired
     historyRepository historyRepo;
 
-    @RequestMapping(value="/runalgo", method = RequestMethod.GET)
+    @RequestMapping(value="/runalgo", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, ArrayList<Map<String, String>>> tableinfo(@RequestParam(value="userEmail") String userEmail) throws ExecutionException, InterruptedException {
 
@@ -40,7 +40,7 @@ public class Getrequest_runalgo {
 
         try {
             System.out.println("running algorithm");
-            Process p = Runtime.getRuntime().exec("python -m algo_script");
+            Process p = Runtime.getRuntime().exec("python -m algo_script 3");
             int re = p.waitFor();
             if (re == 0) {
                 System.out.println("success");
@@ -83,6 +83,7 @@ public class Getrequest_runalgo {
             System.out.println("System wrong!");
         }
         // send jsonobeject to fronted
+        System.out.println(resultAlgo);
         return resultAlgo;
     }
 
