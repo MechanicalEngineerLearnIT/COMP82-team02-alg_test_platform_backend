@@ -9,6 +9,7 @@ from tqdm import tqdm
 import json
 import matplotlib.pyplot as plt
 import numpy as np
+import sys
 #this class is for write json
 class NpEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -20,8 +21,8 @@ class NpEncoder(json.JSONEncoder):
             return obj.tolist()
         else:
             return super(NpEncoder, self).default(obj)
-def test():
-    user_dict = calc_stats(metrics, nmin=4, nmax=4, max_feats=1000,
+def test(n_gram):
+    user_dict = calc_stats(metrics, nmin=int(n_gram), nmax=int(n_gram), max_feats=1000,
                            ngram_type="char_wb")
     print(user_dict['probability'])
     print(user_dict['threshold'])
@@ -168,5 +169,5 @@ def get_ngrams(history, new_doc, min_n, max_n, max_feats, analyzer):
 if __name__ == "__main__":
     #todo same_test()
     #todo diff_test()
-    test()
+    test(sys.argv[1])
     #get_content_from_docs()
