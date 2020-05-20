@@ -30,6 +30,8 @@ public class historyController {
     @RequestMapping("/getRecords")
     @ResponseBody
     public ArrayList<Map<String, String>> getRecords(@RequestParam("userEmail") String userEmail) {
+        System.out.println(userEmail);
+        System.out.println("--------------------");
         ArrayList<Map<String, String>> history = historyRepo.getRecords(userEmail);
 
         if (history.size() >= 1) {
