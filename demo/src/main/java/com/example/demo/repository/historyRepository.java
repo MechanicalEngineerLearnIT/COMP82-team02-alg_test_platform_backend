@@ -39,7 +39,7 @@ public class historyRepository {
             Map<String, String> eachHistory = new HashMap<>();
             eachHistory.put("fileName", item.get(i).getFileName());
             eachHistory.put("submissionTime", item.get(i).getSubmissionTime());
-            eachHistory.put("result", item.get(i).getResult());
+            eachHistory.put("possibility", item.get(i).getResult());
             eachHistory.put("threshold", item.get(i).getThreshold());
             userHistory.add(eachHistory);
         }

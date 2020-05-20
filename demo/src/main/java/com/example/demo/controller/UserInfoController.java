@@ -37,6 +37,7 @@ public class UserInfoController {
             return "email does not exist";
         } else {
             if (userPasswordFromMySQL.equals(userPassword)) {
+                System.out.println("登陆成功！！！！！！！！！");
                 return "true";
             } else {
 

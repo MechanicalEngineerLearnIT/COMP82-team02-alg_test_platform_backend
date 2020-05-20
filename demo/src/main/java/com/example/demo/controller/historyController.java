@@ -30,6 +30,7 @@ public class historyController {
         ArrayList<Map<String, String>> history = historyRepo.getRecords(userEmail);
 
         if (history.size() >= 1) {
+            System.out.println(history);
             return history;
 
         } else {
@@ -38,7 +39,7 @@ public class historyController {
 
             emptyError.put("fileName", "null");
             emptyError.put("submissionTime", "null");
-            emptyError.put("result", "null");
+            emptyError.put("possibility", "null");
             emptyError.put("threshold", "null");
 
             emptyHistory.add(emptyError);

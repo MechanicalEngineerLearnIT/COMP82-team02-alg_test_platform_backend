@@ -34,13 +34,13 @@ public class Getrequest_runalgo {
 
     @RequestMapping(value="/runalgo", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, ArrayList<Map<String, String>>> tableinfo(@RequestParam(value="userEmail") String userEmail) throws ExecutionException, InterruptedException {
+    public Map<String, ArrayList<Map<String, String>>> tableinfo(@RequestParam(value="userEmail") String userEmail,@RequestParam(value="n") String n) throws ExecutionException, InterruptedException {
 
         //todo run the algo
 
         try {
             System.out.println("running algorithm");
-            Process p = Runtime.getRuntime().exec("python -m algo_script 3");
+            Process p = Runtime.getRuntime().exec("python -m algo_script "+n);
             int re = p.waitFor();
             if (re == 0) {
                 System.out.println("success");
@@ -69,12 +69,27 @@ public class Getrequest_runalgo {
 
         //get result for update database
         ArrayList<Map<String, String>> resultTable = resultAlgo.get("probabilityTable");
-        String result = resultTable.toString();
+        StringBuilder a = new StringBuilder();
+        for(int i=0;i<resultTable.size();i++){
+            String similarity = resultTable.get(i).get("similarity");
+            String metricsName=resultTable.get(i).get("metricsName");
+            String temp = metricsName +": "+similarity;
+            a.append(temp).append(";");
+
+        }
+        String result = a.toString();
+
 
         //get threshold for update database
         ArrayList<Map<String, String>> thresholdTable = resultAlgo.get("thresholdTable");
         String threshold = thresholdTable.toString();
 
+        System.out.println(n+"n");
+        System.out.println(userEmail+"userEmail");
+        System.out.println(fileName+"fileName");
+        System.out.println(submissionTime+"submissionTime");
+        System.out.println(result+"result");
+        System.out.println(threshold+"threshold");
 
         //adding history into database
         if (historyRepo.addRecord(userEmail, fileName,submissionTime,result,threshold ) >= 1) {
@@ -93,7 +108,7 @@ public class Getrequest_runalgo {
         final String GSTIME = "yyyy-MM-dd HH:mm:ss";
         sdf = new SimpleDateFormat(GSTIME);
 
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC+10")); // 就是这一步指定对应的时区
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC")); // 就是这一步指定对应的时区
         Date date = null; //初始化date
         try {
             date = sdf.parse(time_date); //Mon Jan 14 00:00:00 CST 2013
