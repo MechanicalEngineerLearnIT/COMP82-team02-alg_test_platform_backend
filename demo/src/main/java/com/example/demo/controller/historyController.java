@@ -3,10 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.history;
 import com.example.demo.repository.historyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -21,17 +18,15 @@ public class historyController {
     @Autowired
     historyRepository historyRepo;
 
-    @RequestMapping("/getAllRecords")
+    @RequestMapping(value ="/getAllRecords", method = RequestMethod.POST)
     @ResponseBody
     public List<history> getAllRecords() {
         return historyRepo.getAllRecords();
     }
 
-    @RequestMapping("/getRecords")
+    @RequestMapping(value ="/getRecords", method = RequestMethod.POST)
     @ResponseBody
     public ArrayList<Map<String, String>> getRecords(@RequestParam("userEmail") String userEmail) {
-        System.out.println(userEmail);
-        System.out.println("--------------------");
         ArrayList<Map<String, String>> history = historyRepo.getRecords(userEmail);
 
         if (history.size() >= 1) {
@@ -56,7 +51,7 @@ public class historyController {
     used to delete user's history
     if user want to delete
      */
-    @RequestMapping("/deleteRecord")
+    @RequestMapping(value ="/deleteRecord", method = RequestMethod.POST)
     @ResponseBody
     public String deteteRecord(@RequestParam("userEmail") String userEmail, @RequestParam("submissionTime") Timestamp submissionTime) {
         if (historyRepo.deleteRecord(userEmail, submissionTime) >= 1) {

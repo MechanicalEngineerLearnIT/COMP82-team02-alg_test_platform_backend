@@ -34,13 +34,13 @@ public class Getrequest_runalgo {
 
     @RequestMapping(value="/runalgo", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, ArrayList<Map<String, String>>> tableinfo(@RequestParam(value="userEmail") String userEmail,@RequestParam(value="n") String n) throws ExecutionException, InterruptedException {
+    public Map<String, ArrayList<Map<String, String>>> tableinfo(@RequestParam(value="userEmail") String userEmail) throws ExecutionException, InterruptedException {
 
         //todo run the algo
 
         try {
             System.out.println("running algorithm");
-            Process p = Runtime.getRuntime().exec("python -m algo_script "+n);
+            Process p = Runtime.getRuntime().exec("python -m algo_script 3");
             int re = p.waitFor();
             if (re == 0) {
                 System.out.println("success");
