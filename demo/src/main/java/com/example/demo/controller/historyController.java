@@ -28,7 +28,12 @@ public class historyController {
     @ResponseBody
     public ArrayList<Map<String, String>> getRecords(@RequestParam("userEmail") String userEmail) {
         ArrayList<Map<String, String>> history = historyRepo.getRecords(userEmail);
-
+        for(Integer i=0;i<history.size();i++){
+            String str = history.get(i).get("possibility").replace(';','\n');
+            Map<String, String> newmap = history.get(i);
+            newmap.put("possibility", str);
+            history.set(i,newmap);
+        }
         if (history.size() >= 1) {
             System.out.println(history);
             return history;
