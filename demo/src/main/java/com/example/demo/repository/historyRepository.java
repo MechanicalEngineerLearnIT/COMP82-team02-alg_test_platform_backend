@@ -22,9 +22,10 @@ public class historyRepository {
 
     /*Getting all Items from table*/
     public List<history> getAllRecords() {
-        List<history> items = template.query("select userEmail,fileName,submissionTime,result,threshold from history", (result, rowNum) -> new history(
+        List<history> items = template.query("select userEmail,fileName,submissionTime,result,threshold,n_gram, conclusion from history", (result, rowNum) -> new history(
                 result.getString("userEmail"), result.getTimestamp("submissionTime"),
-                result.getString("result"), result.getString("threshold"),result.getString("fileName")));
+                result.getString("result"), result.getString("threshold"),result.getString("fileName"),
+                result.getString("n_gram"),result.getString("conclusion")));
         return items;
     }
 
@@ -41,6 +42,8 @@ public class historyRepository {
             eachHistory.put("submissionTime", item.get(i).getSubmissionTime());
             eachHistory.put("possibility", item.get(i).getResult());
             eachHistory.put("threshold", item.get(i).getThreshold());
+            eachHistory.put("n_gram", item.get(i).getN_gram());
+            eachHistory.put("conclusion", item.get(i).getConclusion());
             userHistory.add(eachHistory);
         }
 
@@ -49,14 +52,14 @@ public class historyRepository {
     }
 
     /*Adding a record into database table*/
-    public int addRecord(String userEmail, String fileName, Timestamp submissionTime, String result,String threshold) {
-        String query = "INSERT INTO history VALUES(?,?,?,?,?)";
-        return template.update(query, userEmail, fileName,submissionTime, result,threshold);
+    public int addRecord(String userEmail, String fileName, Timestamp submissionTime, String result,String threshold,String n_gram, String conclusion) {
+        String query = "INSERT INTO history VALUES(?,?,?,?,?,?,?)";
+        return template.update(query, userEmail, fileName,submissionTime, result,threshold,n_gram,conclusion);
     }
 
     /*delete a record from database if user want to delete history*/
-    public int deleteRecord(String userEmail, Timestamp submissionTime) {
+    public int deleteRecord(String userEmail, String fileName, Timestamp submissionTime, String result,String threshold,String n_gram, String conclusion) {
         String query = "DELETE FROM history WHERE userEmail =? AND submissionTime =?";
-        return template.update(query, userEmail, submissionTime);
+        return template.update(query, userEmail, fileName,submissionTime, result,threshold,n_gram,conclusion);
     }
 }
