@@ -69,13 +69,18 @@ public class Getrequest_runalgo {
 
         //get result for update database
         ArrayList<Map<String, String>> resultTable = resultAlgo.get("probabilityTable");
+        double avarageProbability = 0.0;
+        double avarageThreshold = 0.0;
+        for(int i=0;i<resultTable.size();i++){
+            avarageProbability=avarageProbability+Double.valueOf(resultTable.get(i).get("similarity"));
+        }
+        avarageProbability=avarageProbability/resultTable.size();
         StringBuilder a = new StringBuilder();
         for(int i=0;i<resultTable.size();i++){
             String similarity = resultTable.get(i).get("similarity");
             String metricsName=resultTable.get(i).get("metricsName");
             String temp = metricsName +": "+similarity;
             a.append(temp).append(";");
-
         }
         String result = a.toString();
 
@@ -83,16 +88,26 @@ public class Getrequest_runalgo {
         //get threshold for update database
         ArrayList<Map<String, String>> thresholdTable = resultAlgo.get("thresholdTable");
         String threshold = thresholdTable.toString();
-
+        for(int i=0;i<thresholdTable.size();i++){
+            avarageThreshold=avarageThreshold+Double.valueOf(thresholdTable.get(i).get("threshold"));
+        }
+        avarageThreshold=avarageThreshold/thresholdTable.size();
         System.out.println(n+"n");
         System.out.println(userEmail+"userEmail");
         System.out.println(fileName+"fileName");
         System.out.println(submissionTime+"submissionTime");
         System.out.println(result+"result");
         System.out.println(threshold+"threshold");
-
+        String conclusion;
+        if (avarageThreshold>avarageProbability){
+            conclusion = "The avarage similarity between known files is "+avarageThreshold +". The avarage similarity between known files and unknow file is "+avarageProbability+". So the algorithm believe this unknown file is written by other student";
+        }
+        else{
+            conclusion = "The avarage similarity between known files is "+avarageThreshold +". The avarage similarity between known files and unknow file is "+avarageProbability+". So the algorithm believe this unknown file is written by same student";
+        }
         //adding history into database
-        if (historyRepo.addRecord(userEmail, fileName,submissionTime,result,threshold ) >= 1) {
+
+        if (historyRepo.addRecord(userEmail, fileName,submissionTime,result,threshold,n,conclusion ) >= 1) {
             System.out.println("Record Added Successfully");
         } else {
             System.out.println("System wrong!");

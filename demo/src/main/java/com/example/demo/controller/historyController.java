@@ -18,21 +18,21 @@ public class historyController {
     @Autowired
     historyRepository historyRepo;
 
-    @RequestMapping(value ="/getAllRecords", method = RequestMethod.POST)
+    @RequestMapping(value = "/getAllRecords", method = RequestMethod.POST)
     @ResponseBody
     public List<history> getAllRecords() {
         return historyRepo.getAllRecords();
     }
 
-    @RequestMapping(value ="/getRecords", method = RequestMethod.POST)
+    @RequestMapping(value = "/getRecords", method = RequestMethod.POST)
     @ResponseBody
     public ArrayList<Map<String, String>> getRecords(@RequestParam("userEmail") String userEmail) {
         ArrayList<Map<String, String>> history = historyRepo.getRecords(userEmail);
-        for(Integer i=0;i<history.size();i++){
-            String str = history.get(i).get("possibility").replace(';','\n');
+        for (Integer i = 0; i < history.size(); i++) {
+            String str = history.get(i).get("possibility").replace(';', '\n');
             Map<String, String> newmap = history.get(i);
             newmap.put("possibility", str);
-            history.set(i,newmap);
+            history.set(i, newmap);
         }
         if (history.size() >= 1) {
             System.out.println(history);
@@ -57,13 +57,4 @@ public class historyController {
     used to delete user's history
     if user want to delete
      */
-    @RequestMapping(value ="/deleteRecord", method = RequestMethod.POST)
-    @ResponseBody
-    public String deteteRecord(@RequestParam("userEmail") String userEmail, @RequestParam("submissionTime") Timestamp submissionTime) {
-        if (historyRepo.deleteRecord(userEmail, submissionTime) >= 1) {
-            return "User Deleted Successfully";
-        } else {
-            return "Something went wrong !";
-        }
-    }
 }
