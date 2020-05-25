@@ -17,7 +17,7 @@ public class uploadFile {
         // 获取文件名
         String fileName = file.getOriginalFilename();
         // 在file文件夹中创建名为fileName的文件
-        OutputStreamWriter op = new OutputStreamWriter(new FileOutputStream("./data/unknown/" + fileName), "UTF-8");
+        OutputStreamWriter op = new OutputStreamWriter(new FileOutputStream("E:\\home_work\\project\\comp90082_team02\\data\\unknown\\" + fileName), "UTF-8");
         // 获取文件输入流
         InputStreamReader inputStreamReader = new InputStreamReader(file.getInputStream());
         char[] bytes = new char[12];
@@ -38,7 +38,7 @@ public class uploadFile {
         // 获取文件名
         String fileName = file.getOriginalFilename();
         // 在file文件夹中创建名为fileName的文件
-        OutputStreamWriter op = new OutputStreamWriter(new FileOutputStream("./data/known/" + fileName), "UTF-8");
+        OutputStreamWriter op = new OutputStreamWriter(new FileOutputStream("E:\\home_work\\project\\comp90082_team02\\data\\known\\" + fileName), "UTF-8");
         // 获取文件输入流
         InputStreamReader inputStreamReader = new InputStreamReader(file.getInputStream());
         char[] bytes = new char[12];

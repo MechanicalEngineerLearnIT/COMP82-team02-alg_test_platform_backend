@@ -24,7 +24,7 @@ public class thread_create_json implements Callable<Map<String, ArrayList<Map<St
             sleep(100);
             System.out.println("1秒运行一次");
             // 如果存在，就创建json文件
-            if (resultAreThere("src/main/resources/algoresult")) {
+            if (resultAreThere("E:\\home_work\\project\\comp90082_team02\\algoresult\\")) {
                 Map<String, ArrayList<Map<String, String>>> output = new HashMap<>();
                 ArrayList<Map<String, String>> probabilityTable = new ArrayList<>();
                 ArrayList<Map<String, String>> thresholdTable = new ArrayList<>();
@@ -32,7 +32,7 @@ public class thread_create_json implements Callable<Map<String, ArrayList<Map<St
                 // create fileName json
                 ArrayList<Map<String, String>> fileNameTable = new ArrayList<>();
                 Map<String, String> fileNameMap = new HashMap<>();
-                File file = new File("./data/unknown/");
+                File file = new File("E:\\home_work\\project\\comp90082_team02\\data\\unknown\\");
 
                 String[] filelist = file.list();
                 if (filelist != null) {
@@ -41,7 +41,7 @@ public class thread_create_json implements Callable<Map<String, ArrayList<Map<St
                     output.put("fileNameTable", fileNameTable);
                 }
                 // create threshold json
-                String thresholdStr = getJson("src/main/resources/algoresult/threshold.json");
+                String thresholdStr = getJson("E:\\home_work\\project\\comp90082_team02\\algoresult\\threshold.json");
                 JSONObject thresholdJsonObject = new JSONObject(thresholdStr);
                 Iterator thresholdKeys = thresholdJsonObject.keys();
                 //然后通过循环遍历出的key值
@@ -56,7 +56,7 @@ public class thread_create_json implements Callable<Map<String, ArrayList<Map<St
 
 
                 // create probability json and graph json
-                String probabilityStr = getJson("src/main/resources/algoresult/probability.json");
+                String probabilityStr = getJson("E:\\home_work\\project\\comp90082_team02\\algoresult\\probability.json");
                 JSONObject probabilityJsonObject = new JSONObject(probabilityStr);
                 Iterator keys = probabilityJsonObject.keys();
                 //然后通过循环遍历出的key值
@@ -71,7 +71,8 @@ public class thread_create_json implements Callable<Map<String, ArrayList<Map<St
                 System.out.println("here");
                 try {
                     System.out.println("deleting files ");
-                    Process p = Runtime.getRuntime().exec("python -m deletefiles");
+                    String[] arguments = new String[] {"python", "E:\\home_work\\project\\comp90082_team02\\deletefiles.py"};
+                    Process p = Runtime.getRuntime().exec(arguments);
                     int re = p.waitFor();
                     if (re == 0) {
                         System.out.println("success");
