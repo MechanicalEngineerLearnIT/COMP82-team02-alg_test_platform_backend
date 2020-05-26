@@ -40,7 +40,7 @@ public class Getrequest_runalgo {
 
         try {
             System.out.println("running algorithm");
-            String[] arguments = new String[] {"python", "E:\\home_work\\project\\comp90082_team02\\algo_script.py",n};
+            String[] arguments = new String[] {"python3", "//home//ubuntu//integrity_jar//algo_script.py",n};
             Process p = Runtime.getRuntime().exec(arguments);
             int re = p.waitFor();
             if (re == 0) {
